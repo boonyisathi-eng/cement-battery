@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Concrete Battery | Ni-Fe Cement Structural Battery</title>
+  
+  <!-- นำเข้า Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- นำเข้า Chart.js สำหรับวาดกราฟ -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- นำเข้า FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- นำเข้า Font Sarabun สำหรับใช้งานทั้งเว็บ -->
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* บังคับใช้ฟอนต์ Sarabun กับทุกส่วนในเว็บไซต์ */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Sarabun', sans-serif; }
+    
+    body { background: #f0f4f0; color: #1a2e1f; padding: 2rem 1.5rem; }
+    .container { max-width: 1400px; margin: 0 auto; }
+    .hero { text-align: center; margin-bottom: 2rem; }
+    .hero h1 { font-size: 1.8rem; background: linear-gradient(135deg, #1e4a2f, #2b6e3c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .badge-flex { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+    .badge { background: #e9f5e6; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.8rem; font-weight: 600; color: #1f5e2d; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.8rem; margin-bottom: 2rem; }
+    .card { background: white; border-radius: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.08); padding: 1.5rem; border: 1px solid #ddebe0; transition: transform 0.2s; }
+    .card:hover { transform: translateY(-3px); }
+    .card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; border-left: 6px solid #3c9e4c; padding-left: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
+    .kpi-row { display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+    .kpi { background: #f6fbf4; padding: 0.8rem; border-radius: 1.2rem; flex: 1; text-align: center; }
+    .kpi .value { font-size: 2rem; font-weight: 800; color: #236b34; }
+    .savings { background: #d9f0d3; border-radius: 1rem; padding: 0.6rem; text-align: center; margin: 0.5rem 0; }
+    .img-gallery { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; justify-content: center; }
+    .img-card { background: #fafef7; border-radius: 1.2rem; padding: 0.6rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); width: 240px; text-align: center; }
+    .img-card img { width: 100%; border-radius: 1rem; background: #eef4ea; height: 160px; object-fit: contain; cursor: pointer; }
+    .caption { font-size: 0.7rem; color: #4f6b4a; margin-top: 6px; }
+    .comparison-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .comparison-table th, .comparison-table td { padding: 0.6rem 0.4rem; text-align: left; border-bottom: 1px solid #deecd9; }
+    .green-bg { background: #e0f2df; border-radius: 28px; padding: 0.2rem 0.6rem; font-weight: bold; }
+    .calc-panel { background: #eef4ea; border-radius: 1.2rem; padding: 1rem; margin-top: 1rem; }
+    input[type="range"] { width: 100%; accent-color: #3c9e4c; }
+    .exp-compare { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+    .exp-card { background: #f9fef7; border-radius: 1rem; padding: 0.8rem; flex: 1; text-align: center; border: 1px solid #cde0c4; }
+    .exp-card h4 { color: #2b6e3c; margin-bottom: 0.3rem; }
+    footer { text-align: center; margin-top: 2rem; font-size: 0.75rem; color: #4f6b4a; border-top: 1px solid #cde2c4; padding-top: 1.5rem; }
+    .note-data { background: #eef4ea; border-radius: 1rem; padding: 0.8rem; margin-top: 0.8rem; font-size: 0.8rem; }
+    @media (max-width: 700px) { body { padding: 1rem; } .img-card { width: 160px; } .img-card img { height: 120px; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="hero">
+    <h1><i class="fas fa-battery-full"></i> Cement-Based Solid-State Ni-Fe Battery</h1>
+    <p>แบตเตอรี่โครงสร้างคอนกรีต | ขั้วไฟฟ้าโฟมนิกเกิล | Zero Energy Building</p>
+    <div class="badge-flex">
+      <span class="badge"><i class="fas fa-charging-station"></i> Ni-Fe Redox</span>
+      <span class="badge"><i class="fas fa-cube"></i> Nickel Foam Electrode</span>
+      <span class="badge"><i class="fas fa-chart-line"></i> CV & Charge/Discharge</span>
+      <span class="badge"><i class="fas fa-leaf"></i> Carbon -50%</span>
+    </div>
+  </div>
+
+  <!-- ============ ส่วนแสดงรูปภาพจากงานวิจัยของคุณ ============ -->
+  <div class="card mb-8">
+    <div class="card-title"><i class="fas fa-flask"></i> ผลการทดลองจากงานวิจัย (Experimental Data)</div>
+    
+    <!-- แถวที่ 1: กราฟ Charge/Discharge -->
+    <h4 style="margin: 0.5rem 0 0 0; color:#2d6a4f;"><i class="fas fa-charging-station"></i> Voltage-time (Charge/Discharge)</h4>
+    <div class="img-gallery">
+      <div class="img-card">
+        <img src="GCD 2.jpg" alt="Charge discharge 2hr" onerror="this.src='https://placehold.co/300x180/e8f5e9/2e7d32?text=GCD+2.jpg'; this.onerror=null;">
+        <div class="caption">📊 กราฟ Voltage-time MF-CBB (2 hr)</div>
+      </div>
+      <div class="img-card">
+        <img src="GCD 4.jpg" alt="Charge discharge 4hr" onerror="this.src='https://placehold.co/300x180/e8f5e9/2e7d32?text=GCD+4.jpg'; this.onerror=null;">
+        <div class="caption">📊 กราฟ Voltage-time MF-CBB (4 hr)</div>
+      </div>
+      <div class="img-card">
+        <img src="GCD 6.jpg" alt="Charge discharge 6hr" onerror="this.src='https://placehold.co/300x180/e8f5e9/2e7d32?text=GCD+6.jpg'; this.onerror=null;">
+        <div class="caption">📊 กราฟ Voltage-time MF-CBB (6 hr)</div>
+      </div>
+    </div>
+
+    <!-- แถวที่ 2: Cyclic Voltammetry -->
+    <h4 style="margin: 1rem 0 0 0; color:#2d6a4f;"><i class="fas fa-waveform"></i> Cyclic Voltammetry (CV) curves</h4>
+    <div class="img-gallery">
+      <div class="img-card">
+        <img src="CV 2.jpg" alt="CV 2hr" onerror="this.src='https://placehold.co/300x180/e8f5e9/2e7d32?text=CV+2.jpg'; this.onerror=null;">
+        <div class="caption">⚡ CV ที่ 2 hr (5,10,20 mV/s)</div>
+      </div>
+      <div class="img-card">
+        <img src="CV4.jpg" alt="CV 4hr" onerror="this.src='https://placehold.co/300x180/e8f5e9/2e7d32?text=CV4.jpg'; this.onerror=null;">
+        <div class="caption">⚡ CV ที่ 4 hr (5,10,20 mV/s)</div>
+      </div>
+      <div class="img-card">
+        <img src="CV62.jpg" alt="CV 6hr" onerror="this.src='https://placehold.co/300x180/e8f5e9/2e7d32?text=CV62.jpg'; this.onerror=null;">
+        <div class="caption">⚡ CV ที่ 6 hr (5,10,20 mV/s)</div>
+      </div>
+    </div>
+
+    <!-- แถวที่ 3: SEM images -->
+    <h4 style="margin: 1rem 0 0 0; color:#2d6a4f;"><i class="fas fa-microscope"></i> SEM Microstructure</h4>
+    <div class="img-gallery">
+      <div class="img-card">
+        <img src="SEM Ni.jpg" alt="SEM Ni" onerror="this.src='https://placehold.co/300x180/e8f5e9/2e7d32?text=SEM+Ni.jpg'; this.onerror=null;">
+        <div class="caption">🔬 SEM Ni foam</div>
+      </div>
+      <div class="img-card">
+        <img src="SEM Fe.jpg" alt="SEM Fe" onerror="this.src='https://placehold.co/300x180/e8f5e9/2e7d32?text=SEM+Fe.jpg'; this.onerror=null;">
+        <div class="caption">🔬 SEM Fe</div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Dashboard หลัก: เปรียบเทียบคาร์บอน + ค่าไฟ -->
+  <div class="dashboard-grid">
+    
+    <!-- Carbon Footprint Card -->
+    <div class="card h-fit">
+      <div class="card-title"><i class="fas fa-cloud"></i> Carbon Footprint บ้าน 1 หลัง</div>
+      <div class="kpi-row">
+        <div class="kpi"><span class="value" id="carbonNormal">13.0</span> ตัน CO₂</div>
+        <div class="kpi"><span class="value" id="carbonGreen">6.5</span> ตัน CO₂</div>
+      </div>
+      <div class="savings">✅ ลดลง 50% (ประหยัดคาร์บอน 6.5 ตัน)</div>
+      <canvas id="carbonChart" style="max-height: 180px; margin-top: 1rem;"></canvas>
+      <div style="font-size:0.75rem; margin-top:0.5rem; color:#4f6b4a;">⚡ อ้างอิง: อิฐมวลเบา 5,000 ก้อน (2.6→1.3 kgCO₂/ก้อน)</div>
+    </div>
+
+    <!-- ส่วนสรุปข้อมูลเพิ่มเติม (จัดรูปแบบด้วย Tailwind CSS แบบเป็นระเบียบ) -->
+    <div style="grid-column: 1 / -1;" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-2">
+      <div class="p-6 md:p-8">
+        <div class="mb-6 border-l-8 border-green-600 pl-6">
+            <h1 class="text-2xl font-bold text-gray-800">นวัตกรรมแบตเตอรี่คอนกรีต Ni-Fe</h1>
+            <p class="text-gray-600 mt-2 text-md">โซลูชันเพื่อที่อยู่อาศัยแบบ Net Zero และการประหยัดพลังงานที่ยั่งยืน</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                <div class="flex items-center mb-4">
+                    <span class="text-2xl mr-2">💰</span>
+                    <h2 class="text-xl font-semibold text-gray-700">ประสิทธิภาพการประหยัดค่าไฟ</h2>
+                </div>
+                <div class="flex justify-between items-end mb-4">
+                    <div>
+                        <p class="text-sm text-gray-500">ก่อนติดตั้ง</p>
+                        <p class="text-2xl font-bold text-gray-500">2,480 <span class="text-sm">บาท/ด.</span></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-green-600 font-semibold">หลังติดตั้ง (ลดลง 45%)</p>
+                        <p class="text-4xl font-bold text-green-600">1,364 <span class="text-lg text-green-700">บาท/ด.</span></p>
+                    </div>
+                </div>
+                <div class="bg-green-100 p-3 rounded-xl text-center">
+                    <p class="text-green-800 font-semibold">ประหยัดได้ปีละ <span class="text-2xl">13,394</span> บาท</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                <div class="flex items-center mb-4">
+                    <span class="text-2xl mr-2">🌍</span>
+                    <h2 class="text-xl font-semibold text-gray-700">เป้าหมาย Net Zero</h2>
+                </div>
+                <div class="mb-4">
+                    <div class="flex justify-between mb-1 text-sm font-medium text-gray-600">
+                        <span>ความคืบหน้าโครงการ</span>
+                        <span>66.6%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+                        <div class="bg-green-500 h-4 rounded-full" style="width: 66.6%"></div>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm italic border-t border-gray-200 pt-3">
+                    ลดการปล่อย CO2 ได้ <strong>50%</strong> (จาก 13.0 เหลือ 6.5 ตันต่อปี)
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-100 p-6 rounded-2xl">
+            <h2 class="text-blue-800 font-bold mb-3 flex items-center">
+                <span class="mr-2">🔬</span> การหาสภาวะที่เหมาะสมที่สุด (Optimization)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-blue-200 opacity-60">
+                    <p class="font-bold text-gray-500 italic">2 ชั่วโมง</p>
+                    <p class="text-sm text-gray-500">แรงดัน 1.15V โครงสร้างเริ่มก่อตัว</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border-2 border-blue-500 shadow-md transform md:scale-105">
+                    <p class="font-bold text-blue-600 italic text-lg">⭐ 4 ชั่วโมง (Best)</p>
+                    <ul class="text-sm text-gray-700 list-disc ml-4 mt-2">
+                        <li>แรงดันสูงสุดคงที่ 1.20 V</li>
+                        <li>กระแสไฟฟ้าสูงสุด (Peak)</li>
+                        <li>โครงสร้าง SEM สม่ำเสมอที่สุด</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-blue-200 opacity-60">
+                    <p class="font-bold text-gray-500 italic">6 ชั่วโมง</p>
+                    <p class="text-sm text-gray-500">แรงดันลดลง โครงสร้างหนาแน่นเกินไป</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ตารางเปรียบเทียบ -->
+    <div class="card h-fit">
+      <div class="card-title"><i class="fas fa-microchip"></i> เทคนิคเปรียบเทียบ</div>
+      <table class="comparison-table">
+        <tr><th>คุณสมบัติ</th><th>แบตเตอรี่คอนกรีต Ni-Fe</th><th>บ้านทั่วไป</th></tr>
+        <tr><td>การกักเก็บพลังงาน</td><td>✅ ในโครงสร้างคอนกรีต</td><td>❌ แยกแบตเตอรี่</td></tr>
+        <tr><td>ความปลอดภัย</td><td>✅ โซลิดสเตต ไม่ติดไฟ</td><td>⚠️ ความเสี่ยง thermal</td></tr>
+        <tr><td>Carbon Footprint</td><td class="green-bg">ลด 50%</td><td>ปล่อยสูง</td></tr>
+        <tr><td>ขั้วไฟฟ้า</td><td>Ni foam พื้นที่ผิวสูง</td><td>แผ่นธรรมดา</td></tr>
+      </table>
+    </div>
+
+    <!-- ผลลัพธ์สิ่งแวดล้อม -->
+    <div class="card h-fit">
+      <div class="card-title"><i class="fas fa-chart-line"></i> ผลลัพธ์เชิงสิ่งแวดล้อม & เศรษฐกิจ</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+        <div class="kpi"><span class="value">50</span>% <br>↓ Carbon</div>
+        <div class="kpi"><span class="value">45</span>% <br>↓ ค่าไฟ</div>
+        <div class="kpi"><span class="value">60</span>% <br>↓ Waste</div>
+      </div>
+      <canvas id="radarChart" style="max-height: 220px; margin-top: 1rem;"></canvas>
+    </div>
+
+  </div>
+
+ 
+  <div class="card">
+    <div class="card-title"><i class="fas fa-graduation-cap"></i> ตามงานวิจัย "Cement-based solid-state nickel-iron batteries"</div>
+    <p class="mb-2"><strong>วัตถุประสงค์:</strong> พัฒนาคอนกรีต multifunctional (รับแรง + กักเก็บพลังงาน) ประเมินสมรรถนะและสนับสนุน Zero-energy buildings</p>
+    <p class="mb-2"><strong>หลักการ:</strong> Cathode: Ni(OH)₂/NiOOH, Anode: Fe, อิเล็กโทรไลต์ซีเมนต์อัลคาไลน์, ขั้วไฟฟ้าโฟมนิกเกิลเพิ่มพื้นที่ผิวและประสิทธิภาพ</p>
+    <p><strong>ข้อสรุป:</strong> แบตเตอรี่ Ni-Fe ฐานซีเมนต์ชาร์จซ้ำได้ แม้ความหนาแน่นพลังงานต่ำ แต่เหมาะกับโครงสร้างอาคารอัจฉริยะ ลด carbon footprint</p>
+  </div>
+  
+  <footer>
+    <i class="fas fa-database"></i> ข้อมูลอ้างอิงจากงานวิจัย Design and development of cement-based solid-state nickel–iron batteries using Ni foam electrodes | ค่าไฟไทย 4.77 บาท/หน่วย
+  </footer>
+</div>
+
+<script>
+  // ส่วนคำนวณค่าไฟ (หากมีการดึงใช้ input ในหน้าเว็บ)
+  const energySlider = document.getElementById('energySlider');
+  const kwhValue = document.getElementById('kwhValue');
+  const dynamicSave = document.getElementById('dynamicSave');
+  const yearSave = document.getElementById('yearSave');
+  const elecBillNormal = document.getElementById('elecBillNormal');
+  const elecBillGreen = document.getElementById('elecBillGreen');
+  const moneySavingText = document.getElementById('moneySavingText');
+  const netZeroSpan = document.getElementById('netZeroPercent');
+  const progressBar = document.getElementById('progressBar');
+  const RATE = 4.77;
+
+  function updateBills() {
+    if (!energySlider) return; // ป้องกัน Error หากไม่มี element นี้
+    let kwh = parseFloat(energySlider.value);
+    if(kwhValue) kwhValue.innerText = kwh;
+    let normal = kwh * RATE;
+    let green = normal * 0.55;
+    let save = normal - green;
+    if(elecBillNormal) elecBillNormal.innerText = normal.toFixed(0);
+    if(elecBillGreen) elecBillGreen.innerText = green.toFixed(0);
+    if(dynamicSave) dynamicSave.innerText = save.toFixed(0);
+    if(yearSave) yearSave.innerText = (save * 12).toFixed(0);
+    if(moneySavingText) moneySavingText.innerHTML = `ประหยัดไฟ ${save.toFixed(0)} บาท/เดือน (45%)`;
+    if(netZeroSpan) netZeroSpan.innerText = "66.6";
+    if(progressBar) progressBar.style.width = "66.6%";
+  }
+  
+  if(energySlider) {
+    energySlider.addEventListener('input', updateBills);
+    updateBills();
+  }
+
+  // สร้างกราฟแท่ง Carbon Footprint
+  const ctxCarbon = document.getElementById('carbonChart');
+  if (ctxCarbon) {
+    new Chart(ctxCarbon, {
+      type: 'bar',
+      data: { labels: ['บ้านปกติ', 'บ้านแบตเตอรี่คอนกรีต'], datasets: [{ label: 'ตัน CO₂', data: [13.0, 6.5], backgroundColor: ['#b56532', '#3c9e4c'], borderRadius: 10 }] },
+      options: { responsive: true, maintainAspectRatio: true }
+    });
+  }
+
+  // สร้างกราฟเรดาร์ (Radar Chart)
+  const ctxRadar = document.getElementById('radarChart');
+  if (ctxRadar) {
+    new Chart(ctxRadar, {
+      type: 'radar',
+      data: {
+        labels: ['Carbon Reduction (%)', 'Cost Reduction (%)', 'Waste Reduction (%)'],
+        datasets: [{ label: 'Concrete Battery', data: [50, 45, 60], backgroundColor: 'rgba(60,158,76,0.3)', borderColor: '#2b7340', pointBackgroundColor: '#236b34', pointRadius: 5 }]
+      },
+      options: { responsive: true, scales: { r: { beginAtZero: true, max: 100 } } }
+    });
+  }
+</script>
+</body>
+</html>
